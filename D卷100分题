@@ -1,0 +1,359 @@
+# 互质勾股数
+# import math
+#
+# n = int(input().strip())
+# m = int(input().strip())
+#
+#
+# def is_prime(x, y):
+#     while y > 0:
+#         mod = x % y
+#         x = y
+#         y = mod
+#     return x == 1
+#
+#
+# def main():
+#     arr = []
+#     for i in range(n, m + 1):
+#         arr.append(i * i)
+#
+#     Arr = set(arr)
+#     res = []
+#     for i in range(len(arr)):
+#         for j in range(i + 1, len(arr)):
+#             sum = arr[i] + arr[j]
+#             if sum in Arr:
+#                 res.append([int(math.sqrt(arr[i])), int(math.sqrt(arr[j])), int(math.sqrt(sum))])
+#     ans = list(filter(lambda x: is_prime(x[0], x[1]) and is_prime(x[0], x[2]) and is_prime(x[1], x[2]), res))
+#     if len(ans) == 0:
+#         print("NA")
+#     else:
+#         for i in ans:
+#             print(" ".join(map(str, i)))
+#
+#
+# main()
+
+# 表达式括号匹配
+# s = input()
+#
+#
+# def main(s):
+#     count = 0
+#     stack = []
+#     for char in s:
+#         if char != "(" and char != ")":
+#             continue
+#         if len(stack) > 0 and char == ")":
+#             if stack[-1] == "(":
+#                 stack.pop()
+#                 count += 1
+#                 continue
+#             return -1
+#         stack.append(char)
+#     if len(stack) > 0:
+#         return -1
+#     return count
+#
+#
+# print(main(s))
+
+# 检查是否存在满足条件的数字组合
+# n = int(input())
+# arr = list(map(int, input().split(" ")))
+#
+#
+# def main():
+#     arr.sort(reverse=True)
+#     res = []
+#     for i in range(n):
+#         for j in range(i + 1, n):
+#             for k in range(j + 1, n):
+#                 if arr[i] == arr[j] + 2 * arr[k]:
+#                     return f"{arr[i]} {arr[j]} {arr[k]}"
+#                 if arr[i] == 2 * arr[j] + arr[k]:
+#                     return f"{arr[i]} {arr[k]} {arr[j]}"
+#     return 0
+#
+#
+# print(main())
+
+# 快递运输
+# arr = list(map(int, input().split(",")))
+# m = int(input())
+
+
+# def main():
+#     arr.sort()
+#     total = 0
+#     count = 0
+#     for i in arr:
+#         total += i
+#         if total > m:
+#             break
+#         count += 1
+#     return count
+#
+# print(main())
+
+# 括号匹配
+# import re
+#
+# s = input()
+#
+#
+# def main(s):
+#     s = re.sub(r"[^\(\)\[\]\{\}]", "", s)
+#     map = {")": "(", "]": "[", "}": "{"}
+#     stack = []
+#     for i in range(len(s)):
+#         char = s[i]
+#         if len(stack) > 0 and map.get(char) is not None:
+#             if stack[-1] == map[char]:
+#                 stack.pop()
+#                 continue
+#             else:
+#                 return False
+#         stack.append(char)
+#
+#     return len(stack) == 0
+#
+# print(str(main(s)).lower())
+
+# 密钥格式化
+# k = int(input())
+# s = input()
+#
+# def main():
+#     arr = s.split("-")
+#     first = arr[0]
+#     if len(arr) == 1:
+#         return first
+#     temp = list("".join(arr[1:]).upper())
+#     for i in range(len(temp)):
+#         if i % k == 0:
+#             temp[i] = "-" + temp[i]
+#
+#     return first + "".join(temp)
+#
+# print(main())
+
+# 数字字符串组合倒序
+# import re
+#
+# s = input()
+#
+#
+# def main():
+#     words = re.split(r"[^0-9a-zA-Z\-]", s)
+#     res = []
+#     for i in range(len(words) - 1, -1, -1):
+#         word = words[i]
+#         if word == "":
+#             continue
+#         word = word.strip("-")
+#         subwords = re.split(r"-{2,}", word)
+#         for j in range(len(subwords) - 1, -1, -1):
+#             if subwords[j] != "":
+#                 res.append(subwords[j])
+#
+#     return " ".join(res)
+#
+# print(main())
+
+# 寻找相同子串
+# s1 = input()
+# s2 = input()
+#
+# def main():
+#     if len(s1)<len(s2):
+#         return "No"
+#     index = s1.find(s2)
+#     if index == -1:
+#         return "No"
+#     else:
+#         return index+1
+#
+# print(main())
+
+# 用户调度问题
+# import sys
+#
+# n = int(input())
+# res = [list(map(int, input().split())) for _ in range(n)]
+#
+#
+# def get_value(arr, index):
+#     min_value = sys.maxsize
+#     min_index = -1
+#     for i in range(len(arr)):
+#         if i == index:
+#             continue
+#         if arr[i] <= min_value:
+#             min_value = arr[i]
+#             min_index = i
+#     return min_index
+#
+#
+# def main():
+#     last = -1
+#     total = 0
+#     for i in range(n):
+#         min_index = get_value(res[i], last)
+#         total += res[min_index][i]
+#     return total
+#
+#
+# print(main())
+#
+# 在字符串中找出连续最长的数字串
+# 输入获取
+# s = input()
+#
+#
+# def isSign(c):
+#     return c == '+' or c == '-'
+#
+#
+# def isDot(c):
+#     return c == '.'
+#
+#
+# # ”±”仅能出现在开头且其后必须要有数字
+# def isValidSign(signIdx):
+#     nxtIdx = signIdx + 1
+#     return nxtIdx < len(s) and s[nxtIdx].isdigit()
+#
+#
+# # ”.”的两边必须是数字
+# def isValidDot(dotIdx):
+#     preIdx = dotIdx - 1
+#     nxtIdx = dotIdx + 1
+#     return preIdx >= 0 and s[preIdx].isdigit() and nxtIdx < len(s) and s[nxtIdx].isdigit()
+#
+#
+# # 记录数字串时，只保留最长的数字串
+# def getAns(l, r, ans):
+#     # 如果存在长度相同的连续数字串，返回最后一个。 因此下面判断是>=
+#     return s[l:r] if l < len(s) and r - l >= len(ans) else ans
+#
+#
+# # 从s字符串的start位置开始找数字串的开头字符，数字串的开头字符可以是数字，也可以是符号
+# def findStartIdx(i):
+#     while i < len(s):
+#         c = s[i]
+#
+#         if c.isdigit() or (isSign(c) and isValidSign(i)):
+#             break
+#
+#         i += 1
+#
+#     return i
+#
+#
+# # 算法入口
+# def getResult():
+#     # 记录题解
+#     ans = ""
+#
+#     # 记录数字串中“.”的位置，-1表示数字串中没有点
+#     dotIdx = -1
+#
+#     # l 指向数字串的开头
+#     l = findStartIdx(0)
+#
+#     # r 用于扫描数字串
+#     r = l + 1
+#     while r < len(s):
+#         # 当前扫描的到的字符
+#         c = s[r]
+#
+#         if c.isdigit():
+#             # c是数字，则继续扫描下一个
+#             r += 1
+#         elif isSign(c):
+#             # c是加减号，则数字串扫描中断，我们需要先记录[l, r-1]范围的数字串
+#             ans = getAns(l, r, ans)
+#
+#             if isValidSign(r):
+#                 # 由于加减号可以作为数字串开头，如果r位置的加减号是一个合法数字串开头加减号，则可以当成下一个数字串的开头
+#                 l = r
+#             else:
+#                 # 否则，从r+1开始继续找下一个数字的开头
+#                 l = findStartIdx(r+1)
+#
+#             # 新数字串的开头找到后，从l+1开始扫描
+#             r = l + 1
+#             # 同时注意重置dotIdx记录
+#             dotIdx = -1
+#         elif isDot(c):
+#             # 由于dot处理比较复杂，这里无论dot是否会中断数字串扫描，都先将[l, r-1]部分的数字串记录下来
+#             ans = getAns(l, r, ans)
+#
+#             if isValidDot(r):
+#                 # 如果是合法数字串dot, 则判断当前数字串是否已存在”.“
+#                 if dotIdx != -1:
+#                     # 如果已存在".", 则当前数字串包含了两个"."，肯定不合法，此时需要舍弃第一个".", 即新数字串开头位置设置在第一个"."后面
+#                     l = dotIdx + 1
+#
+#                 # 更新dotIdx为第二个"."的位置
+#                 dotIdx = r
+#                 # r继续扫描下一个
+#                 r += 1
+#             else:
+#                 # 如果不是合法数字串dot，即该dot前后不都是数字，则新数字串不能包含进当前dot位置，新数字串开头需要从r+1开始找
+#                 l = findStartIdx(r+1)
+#                 r = l + 1
+#                 dotIdx = -1
+#         else:
+#             # c是其他字符, 则数字串被打断，此时需要先记录[l, r-1]范围的当前数字串， 然后重新寻找下一个数字串的开头
+#             ans = getAns(l, r, ans)
+#             l = findStartIdx(r + 1)
+#             r = l + 1
+#             dotIdx = -1
+#
+#     return getAns(l, r, ans)
+#
+#
+# # 算法调用
+# print(getResult())
+#
+# 找出符合要求的字符串字串
+# s1 = input()
+# s2 = input()
+#
+# def main():
+#     set1 = set(s1)
+#     set2 = set(s2)
+#     set3 = set1.intersection(set2)
+#     res = list(set3)
+#     res.sort()
+#     return "".join(res)
+#
+# print(main())
+#
+# 最大括号深度
+# s = input()
+#
+#
+# def main():
+#     map = {")": "(", "]": "[", "}": "{"}
+#     stack = []
+#     maxdepth = 0
+#     for i in range(len(s)):
+#         c = s[i]
+#         if len(stack) > 0 and map.get(c) is not None and map[c] == stack[-1]:
+#             stack.pop()
+#         else:
+#             stack.append(c)
+#             maxdepth = max(maxdepth, len(stack))
+#
+#     if len(stack) > 0:
+#         return 0
+#     return maxdepth
+#
+#
+# print(main())
+#
+#ABR车路协同场景
