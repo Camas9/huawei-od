@@ -356,4 +356,142 @@
 #
 # print(main())
 #
-#ABR车路协同场景
+# ABR车路协同场景
+# import re
+#
+# s = input()
+# temp = re.compile(r"A=\{(.+)},B=\{(.+)},R=(.+)").search(s)
+# A = list(map(int, temp.group(1).split(",")))
+# B = list(map(int, temp.group(2).split(",")))
+# R = int(temp.group(3))
+#
+# def main():
+#     res = []
+#     for a in A:
+#         cnt = 0
+#         for b in B:
+#             if b < a:
+#                 continue
+#             if b - a <= R or cnt == 0:
+#                 res.append(f"({a},{b})")
+#                 cnt += 1
+#             else:
+#                 break
+#     return "".join(res)
+#
+#
+# print(main())
+#
+# 单词接龙
+# k = int(input())
+# n = int(input())
+# words = [input() for _ in range(n)]
+#
+# def main():
+#     chain = [words.pop(k)]
+#     fix = {}
+#     for word in words:
+#         w = word[0]
+#         if fix.get(w) is None:
+#             fix[w] = []
+#         fix[w].append(word)
+#     for w in fix.keys():
+#         fix[w].sort(key=lambda x:(-len(x),[ord(i) for i in x]))
+#
+#     while True:
+#         tail = chain[-1][-1]
+#         if fix.get(tail):
+#             chain.append(fix[tail].pop(0))
+#         else:
+#             break
+#     return "".join(chain)
+#
+# print(main())
+#
+# 约瑟夫问题
+# from collections import deque
+#
+# arr = deque(list(map(int, input().split(","))))
+# l = int(input())
+# m = int(input())
+#
+#
+# def main():
+#     global arr
+#     global l
+#     global m
+#
+#     res = []
+#     i = 1
+#     while l > 0:
+#         ans = arr.popleft()
+#         if i == m:
+#             res.append(ans)
+#             m = ans
+#             i = 1
+#             l -= 1
+#         else:
+#             arr.append(ans)
+#             i += 1
+#     return ",".join(map(str, res))
+#
+#
+# print(main())
+#
+# 数字涂色
+# n = int(input())
+# arr = list(map(int, input().split()))
+#
+#
+# def main():
+#     arr.sort()
+#     if arr[0] == 1:
+#         return 1
+#     color = [False] * n
+#     count = 0
+#     for i in range(n):
+#         if color[i]:
+#             continue
+#         color[i] = True
+#         for j in range(i + 1, n):
+#             if not color[j] and arr[j] % arr[i] == 0:
+#                 color[j] = True
+#         count += 1
+#     return count
+#
+#
+# print(main())
+#
+# # 水仙花数
+# import math
+#
+# n = int(input())
+# m = int(input())
+#
+#
+# def main():
+#     if n < 3 or n > 7 or m < 0:
+#         return -1
+#     res = {}
+#     for i in range(10):
+#         res[str(i)] = int(math.pow(i, n))
+#
+#     minN = int(math.pow(10, n - 1))
+#     maxN = int(math.pow(10, n))
+#     ans = 0
+#     index = 0
+#     for num in range(minN, maxN):
+#         sumN = 0
+#         for i in str(num):
+#             sumN += res[i]
+#
+#         if sumN == num:
+#             ans = num
+#             if index == m:
+#                 return ans
+#             index += 1
+#
+#     return ans * m
+#
+#
+# print(main())
