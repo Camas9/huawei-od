@@ -1,0 +1,270 @@
+# 寻找身高相近的小朋友
+# h, n = map(int, input().split())
+# heights = list(map(int, input().split()))
+#
+#
+# def main():
+#     heights.sort(key=lambda x: (abs(x - h), x))
+#     return " ".join(map(str, heights))
+#
+#
+# print(main())
+
+# 围棋的气
+#############1
+# black = list(map(int, input().split()))
+# white = list(map(int, input().split()))
+#
+#
+# def mian():
+#     board = [[0] * 19 for _ in range(19)]
+#     for i in range(0, len(black), 2):
+#         x = black[i]
+#         y = black[i + 1]
+#         board[x][y] = 1
+#
+#     for i in range(0, len(white), 2):
+#         x = white[i]
+#         y = white[i + 1]
+#         board[x][y] = 2
+#
+#     black_liberty_count = 0
+#     white_liberty_count = 0
+#     offsets = ((-1, 0), (1, 0), (0, -1), (0, 1))
+#     for i in range(19):
+#         for j in range(19):
+#             if board[i][j] == 0:
+#                 isBlackLiberty = False
+#                 isWhiteLiberty = False
+#
+#                 for offsetX, offsetY in offsets:
+#                     newI = i + offsetX
+#                     newJ = j + offsetY
+#
+#                     if newI < 0 or newI >= 19 or newJ < 0 or newJ >= 19:
+#                         continue
+#
+#                     isBlackLiberty = isBlackLiberty or (board[newI][newJ] == 1)
+#                     isWhiteLiberty = isWhiteLiberty or (board[newI][newJ] == 2)
+#                 if isBlackLiberty:
+#                     black_liberty_count += 1
+#                 if isWhiteLiberty:
+#                     white_liberty_count += 1
+#     return f"{black_liberty_count} {white_liberty_count}"
+#
+#
+# print(mian())
+##########2
+# nums1 = list(map(int, input().split()))
+# nums2 = list(map(int, input().split()))
+#
+#
+# def get_xy(list_in):
+#     list_out = []
+#     for i in range(len(list_in) // 2):
+#         list_out.append((list_in[i * 2], list_in[i * 2 + 1]))
+#     return list_out
+#
+#
+# def count_qi(list_xy, list_ref):
+#     num_qi = 0
+#     list_qi = []
+#     for xy in list_xy:
+#         x, y = xy
+#         for _xy in (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1):
+#             if -1 < _xy[0] < 19 and -1 < _xy[1] < 19 and _xy not in list_ref and _xy not in list_qi:
+#                 num_qi += 1
+#                 list_qi.append(_xy)
+#     return num_qi
+#
+#
+# coords1 = get_xy(nums1)
+# coords2 = get_xy(nums2)
+# print(str(count_qi(coords1, coords1 + coords2))+" "+str(count_qi(coords2, coords1 + coords2)))
+
+# 用连续自然数之和来表达整数
+###############1
+# t = int(input())
+#
+#
+# def main():
+#     arr = [i + 1 for i in range(t)]
+#     res = []
+#     l = 0
+#     r = 1
+#     total = arr[l]
+#
+#     while l < t:
+#         if total > t:
+#             total -= arr[l]
+#             l += 1
+#         elif total == t:
+#             res.append(arr[l:r])
+#             total -= arr[l]
+#             l += 1
+#             if r >= t:
+#                 break
+#             else:
+#                 total += arr[r]
+#                 r += 1
+#         else:
+#             total += arr[r]
+#             r += 1
+#     res.sort(key=lambda x: len(x))
+#     for c in res:
+#         print(f"{t}={'+'.join(map(str, c))}")
+#     print(f"Result:{len(res)}")
+#
+#
+# main()
+############2
+# import math
+#
+# n = int(input())
+# list_out = []
+# for i in range(int(math.sqrt(n))):
+#     m = i + 1
+#     if m % 2 == 0:
+#         if n % m == m // 2:
+#             med = n // m
+#             list_out.append(list(range(med + 1 - m // 2, med + 1 + m // 2)))
+#     elif n % m == 0:
+#         med = n // m
+#         list_out.append(list(range(med - (m - 1) // 2, med + (m + 1) // 2)))
+#
+# for i in list_out:
+#     print("{}={}".format(n, "+".join(map(str, i))))
+#
+# print("result: " + str(len(list_out[-1])))
+
+# API集群负载统计
+###########1
+# n = int(input())
+# cnts = []
+# for _ in range(n):
+#     urlComponents = input().split("/")
+#     for level in range(len(urlComponents)):
+#         urlComponent = urlComponents[level]
+#         if level >= len(cnts):
+#             cnts.append({})
+#         cnts[level][urlComponent] = cnts[level].get(urlComponent, 0) + 1
+#
+# tar_level, tar_urlComponent = input().split()
+# tar_level = int(tar_level)
+# if tar_level >= len(cnts):
+#     print(0)
+# else:
+#     print(cnts[tar_level].get(tar_urlComponent, 0))
+#############2
+# n = int(input())
+# api_list = []
+# for i in range(n):
+#     api_list.append(input().split('/'))
+#
+# ceng, visited = input().split()
+# ceng = int(ceng)
+#
+# total = 0
+# for api in api_list:
+#     if len(api) >= ceng + 1 and api[ceng] == visited:
+#         total += 1
+# print(total)
+
+# 整数对最小和
+###############1
+# arr1 = list(map(int, input().split()))
+# arr2 = list(map(int, input().split()))
+# k = int(input())
+#
+#
+# def main():
+#     res = []
+#     for i in arr1:
+#         for j in arr2:
+#             res.append(i + j)
+#     res.sort()
+#     sumN = 0
+#     for i in range(k):
+#         sumN += res[i]
+#     return sumN
+#
+# print(main())
+#############2
+# ls1 = list(map(int, input().split()))
+# ls2 = list(map(int, input().split()))
+# nums1, arry1 = ls1[0], ls1[1:]
+# nums2, arry2 = ls2[0], ls2[1:]
+# k = int(input())
+# ls3 = []
+# for i in arry1:
+#     for j in arry2:
+#         ls3.append(i + j)
+# print(sum(sorted(ls3)[:k]))
+
+# 素数之积
+# import math
+#
+# n = int(input())
+#
+#
+# def is_prime(num):
+#     if num < 2:
+#         return False
+#     for i in range(2, int(math.sqrt(num)) + 1):
+#         if num % i == 0:
+#             return False
+#     return True
+#
+#
+# def main(num):
+#     if is_prime(num):
+#         return "-1 -1"
+#     for i in range(2, num):
+#         if n % i == 0:
+#             j = n // i
+#             if is_prime(i) and is_prime(j):
+#                 return f"{i} {j}" if i < j else f"{j} {i}"
+#             else:
+#                 break
+#     return "-1 -1"
+#
+#
+# print(main(n))
+
+# CPU算力分配
+###########1
+# import sys
+#
+# l1, l2 = map(int, input().split())
+# A = list(map(int, input().split()))
+# B = list(map(int, input().split()))
+#
+# sumA = sum(A)
+# sumB = 0
+# setB = set()
+#
+# for i in B:
+#     sumB += i
+#     setB.add(i)
+# half_diff = (sumA - sumB) // 2
+# minA = sys.maxsize
+# res = ""
+# for i in A:
+#     j = i - half_diff
+#     if j in setB:
+#         if j < minA:
+#             minA = j
+#             res = f"{i} {j}"
+# print(res)
+###########2
+# L1, L2 = list(map(int, input().split()))
+# cpu_a = list(map(int, input().split()))
+# cpu_a.sort()
+# cpu_b = list(map(int, input().split()))
+# cpu_b.sort()
+# average = sum(cpu_a + cpu_b) // 2
+# 
+# for ci in cpu_a:
+#     if sum(cpu_b) + ci - average in cpu_b:
+#         print(f'{ci} {sum(cpu_b) + ci - average}')
+#         break
