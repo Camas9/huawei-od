@@ -1,0 +1,2167 @@
+# 流浪地球
+# n, e = map(int, input().split())
+# arr = [1001] * n
+# for i in range(e):
+#     t, p = map(int, input().split())
+#     arr[p] = t
+# for i in range(n):
+#     for j in range(n):
+#         inDis = abs(i - j)
+#         outDis = n - inDis
+#         minDis = min(inDis, outDis)
+#         arr[j] = min(arr[j], arr[i] + minDis)
+# maxT = 0
+# last = []
+# for i in range(n):
+#     t = arr[i]
+#     if t > maxT:
+#         maxT = t
+#         last.clear()
+#     elif t < maxT:
+#         continue
+#
+#     last.append(i)
+#
+# last.sort()
+# print(len(last))
+# print(" ".join(map(str, last)))
+
+# 构成正方形的数量
+# n = int(input())
+# arr = [input() for i in range(n)]
+#
+#
+# def getResult():
+#     squarecount = 0
+#     state = set(arr)
+#     for i in range(n):
+#         x1, y1 = map(int, arr[i].split())
+#         for j in range(i + 1, n):
+#             x2, y2 = map(int, arr[j].split())
+#             x3 = x1 - (y1 - y2)
+#             y3 = y1 + (x1 - x2)
+#
+#             x4 = x2 - (y1 - y2)
+#             y4 = y2 + (x1 - x2)
+#             if f"{x3} {y3}" in state and f"{x4} {y4}" in state:
+#                 squarecount += 1
+#             x5 = x1 + (y1 - y2)
+#             y5 = y1 - (x1 - x2)
+#             x6 = x2 + (y1 - y2)
+#             y6 = y2 - (x1 - x2)
+#             if f"{x5} {y5}" in state and f"{x6} {y6}" in state:
+#                 squarecount += 1
+#     return squarecount // 4
+#
+#
+# print(getResult())
+
+# 靠谱的车
+# arr = list(map(int, list(input())))
+#
+#
+# def getResult():
+#     correct = 0
+#     for i in range(len(arr)):
+#         fault = arr[i]
+#         if fault > 4:
+#             fault -= 1
+#         for j in range(len(arr) - i - 1, 0, -1):
+#             fault *= 9
+#         correct += fault
+#     return correct
+#
+#
+# print(getResult())
+
+# 敏感字段加密
+# import sys
+#
+# index = int(input())  # 命令字索引
+# command = input()  # 命令字符串
+# result = []  # 结果列表
+# stack = ""  # 栈
+# for c in command:
+#     if c == "_" and (len(stack) == 0 or stack[0] != '"'):  # 下划线分割命令字
+#         result.append(stack)
+#         stack = ""
+#     elif c == '"' and len(stack) != 0:  # 双引号包含命令字
+#         stack += '"'
+#         result.append(stack)
+#         stack = ""
+#     else:
+#         stack += c
+# if len(stack) > 0:
+#     result.append(stack)  # 将栈中剩余字符加入结果列表
+# ans = list(filter(lambda x: x != "", result))  # 过滤空命令字
+# if index >= len(ans):  # 索引越界
+#     print("ERROR")
+#     sys.exit()
+# ans[index] = "******"  # 加密敏感字段
+# print("_".join(ans))
+
+# TLV解码
+# def print_hex(arr, pos, length):
+#     hes_string = " ".join([format(i, '02x') for i in arr[pos:pos + length]])
+#     print(hes_string)
+#
+#
+# target = int(input(), 16)
+# arr = [int(i, 16) for i in input().split()]
+# pos = 0
+# while pos < len(arr):
+#     t = arr[pos]
+#     length = (arr[pos + 2] << 8) | arr[pos + 1]
+#     if target == t:
+#         print_hex(arr, pos + 3, length)
+#     pos += length + 3
+
+# 分披萨
+############1超时
+# n = int(input())
+# pizza = []
+# for i in range(n):
+#     pizza.append(int(input()))
+#
+#
+# def check(idx):
+#     if idx < 0:
+#         idx = n - 1
+#     elif idx >= n:
+#         idx = 0
+#     return idx
+#
+#
+# def recursive(l, r):
+#     if pizza[l] > pizza[r]:
+#         l = check(l - 1)
+#     else:
+#         r = check(r + 1)
+#     if l == r:
+#         return pizza[l]
+#     else:
+#         return max(recursive(check(l - 1), r) + pizza[l], recursive(l, check(r + 1)) + pizza[r])
+#
+# def getResult():
+#     ans = 0
+#     for i in range(n):
+#         ans = max(ans,recursive(check(i-1),check(i+1))+pizza[i])
+#     return ans
+#
+# print(getResult())
+############2
+# n = int(input())
+# pizza = []
+# for i in range(n):
+#     pizza.append(int(input()))
+#
+# cache = [[0] * n for i in range(n)]
+#
+#
+# def check(idx):
+#     if idx < 0:
+#         idx = n - 1
+#     elif idx >= n:
+#         idx = 0
+#
+#     return idx
+#
+#
+# def recursive(l, r):
+#     if pizza[l] > pizza[r]:
+#         l = check(l - 1)
+#     else:
+#         r = check(r + 1)
+#     if cache[l][r] > 0:
+#         return cache[l][r]
+#     if l == r:
+#         cache[l][r] = pizza[l]
+#     else:
+#         cache[l][r] = max(recursive(check(l - 1), r) + pizza[l], recursive(l, check(r + 1)) + pizza[r])
+#
+#     return cache[l][r]
+#
+#
+# def getResult():
+#     ans = 0
+#     for i in range(n):
+#         ans = max(ans, recursive(check(i - 1), check(i + 1)) + pizza[i])
+#
+#     return ans
+#
+#
+# print(getResult())
+
+# boss的收入
+# def calculate_boss_income(N, relations):
+#     income_dict = {}
+#     parent_dict = {}
+#
+#     for relation in relations:
+#         dist_id, parent_id, income = relation
+#         income_dict[dist_id] = income
+#         parent_dict[dist_id] = parent_id
+#
+#     bosses = set(parent_dict.values()) - set(parent_dict.keys())
+#     boss_id = bosses.pop() if bosses else None
+#
+#     total_income = 0
+#
+#     def calculate_contribution(dist_id):
+#         nonlocal total_income
+#         if dist_id in income_dict:
+#             current_income = income_dict[dist_id]
+#             contribution = (current_income // 100) * 15
+#             total_income += contribution
+#             if dist_id in parent_dict:
+#                 parent_id = parent_dict[dist_id]
+#                 calculate_contribution(parent_id)
+#
+#     for dist_id in income_dict.keys():
+#         calculate_contribution(dist_id)
+#
+#     return [boss_id, total_income]
+#
+#
+# N = int(input())
+# relations = []
+# for _ in range(N):
+#     line = list(map(int, input().split()))
+#     relations.append(line)
+#
+# boss_info = calculate_boss_income(N, relations)
+# print(boss_info[0], boss_info[1])
+
+# 手机App防沉迷系统
+# class App:
+#     def __init__(self, name, priority, start, end):
+#         self.name = name
+#         self.priority = priority
+#         self.start = start
+#         self.end = end
+#
+#
+# def convert(time):
+#     hours, minutes = map(int, time.split(":"))
+#     return hours * 60 + minutes
+#
+# n = int(input())
+#
+# apps = []
+# for _ in range(n):
+#     name, priority, start, end = input().split(" ")
+#     apps.append(App(name, int(priority), convert(start), convert(end)))
+#
+# queryTime = convert(input())
+#
+# def getResult():
+#     registereds = []
+#
+#     for app in apps:
+#         if app.start >= app.end:
+#             continue
+#         idxs = []
+#         flag = False
+#         for j in range(len(registereds)):
+#             registered = registereds[j]
+#             if registered.start >= app.end or app.start >= registered.end:
+#                 continue
+#             if app.priority > registered.priority:
+#                 idxs.append(j)
+#             else:
+#                 flag = True
+#                 break
+#         if flag:
+#             continue
+#         idxs.reverse()
+#         for idx in idxs:
+#             registereds.pop(idx)
+#         registereds.append(app)
+#     ans = "NA"
+#     for registered in registereds:
+#         if registered.start <= queryTime < registered.end:
+#             ans = registered.name
+#             break
+#
+#     return ans
+#
+#
+# print(getResult())
+
+# 字符串分割
+# k = int(input())
+# s = input()
+#
+#
+# def convert(s):
+#     lowerCount = 0
+#     upperCount = 0
+#     for c in s:
+#         if 'z' >= c >= 'a':
+#             lowerCount += 1
+#         elif 'Z' >= c >= 'A':
+#             upperCount += 1
+#     if lowerCount > upperCount:
+#         return s.lower()
+#     elif lowerCount < upperCount:
+#         return s.upper()
+#     else:
+#         return s
+#
+#
+# def getResult():
+#     arr = s.split("-")
+#
+#     ans = []
+#     # ans.append(convert(arr[0])) # 看用例说明，对应第一个子串是不需要做大小写转换的，但是也拿不准，考试时可以都试下
+#     ans.append(arr[0])
+#     newStr = "".join(arr[1:])
+#     for i in range(0, len(newStr), k):
+#         subStr = newStr[i:i + k]
+#         ans.append(convert(subStr))
+#
+#     return "-".join(ans)
+#
+#
+# print(getResult())
+
+# 英文输入法
+# import re
+#
+# s = input()
+# pre = input()
+#
+#
+# # 算法入口
+# def getResult(s, pre):
+#     tmp = re.split("[^a-zA-Z]", s)
+#     cache = list(set(tmp))
+#     cache.sort()
+#     cache = list(filter(lambda x: x.startswith(pre), cache))
+#     if len(cache) > 0:
+#         return " ".join(cache)
+#     else:
+#         return pre
+#
+#
+# # 算法调用
+# print(getResult(s, pre))
+
+# 连续字母长度
+# s = input()
+# k = int(input())
+#
+#
+# def getResult():
+#     global s
+#     global k
+#     if k <= 0:
+#         return -1
+#     s += "0"
+#     count = {}
+#     b = s[0]
+#     long = 1
+#     for i in range(1, len(s)):
+#         c = s[i]
+#         if b == c:
+#             long += 1
+#         else:
+#             if count.get(b) is None or count[b] < long:
+#                 count[b] = long
+#             long = 1
+#             b = c
+#     arr = list(count.values())
+#     if k > len(arr):
+#         return -1
+#     else:
+#         arr.sort(reverse=True)
+#         return arr[k - 1]
+#
+#
+# print(getResult())
+
+# 考勤信息
+# n = int(input())
+# records = [input().split() for _ in range(n)]
+#
+#
+# def isAward(record):
+#     absent = 0
+#     present = 0
+#     late_leaveearly = ("late", "leaveearly")
+#     preRecord = ""
+#
+#     for i in range(len(record)):
+#         if i >= 7:
+#             if "present" == record[i - 7]:
+#                 present -= 1
+#         curRecord = record[i]
+#         if "absent" == curRecord:
+#             absent += 1
+#             if absent > 1:
+#                 return "false"
+#         elif curRecord in late_leaveearly and preRecord in late_leaveearly:
+#             return "false"
+#         elif "present" == curRecord:
+#             present += 1
+#
+#         preRecord = curRecord
+#         window_len = min(i + 1, 7)
+#         if window_len - present > 3:
+#             return "false"
+#
+#     return "true"
+#
+#
+# def getResult():
+#     for record in records:
+#         print(isAward(record))
+#
+#
+# getResult()
+
+# 字符串变换最小字符串
+# s = input()
+#
+#
+# # 算法入口
+# def getResult():
+#     minSArr = list(s)
+#     minSArr.sort()
+#
+#     if s == "".join(minSArr):
+#         return s
+#
+#     sArr = list(s)
+#
+#     for i in range(len(s)):
+#         if sArr[i] != minSArr[i]:
+#             tmp = sArr[i]
+#             sArr[i] = minSArr[i]
+#
+#             swapIdx = s.rindex(minSArr[i])  # s.rfind(minArr[i])
+#             sArr[swapIdx] = tmp
+#             break
+#
+#     return "".join(sArr)
+#
+#
+# # 调用算法
+# print(getResult())
+
+# 整数对最小和
+###############1
+# arr1 = list(map(int, input().split()))
+# arr2 = list(map(int, input().split()))
+# k = int(input())
+#
+#
+# def main():
+#     res = []
+#     for i in arr1:
+#         for j in arr2:
+#             res.append(i + j)
+#     res.sort()
+#     sumN = 0
+#     for i in range(k):
+#         sumN += res[i]
+#     return sumN
+#
+# print(main())
+#############2
+# ls1 = list(map(int, input().split()))
+# ls2 = list(map(int, input().split()))
+# nums1, arry1 = ls1[0], ls1[1:]
+# nums2, arry2 = ls2[0], ls2[1:]
+# k = int(input())
+# ls3 = []
+# for i in arry1:
+#     for j in arry2:
+#         ls3.append(i + j)
+# print(sum(sorted(ls3)[:k]))
+
+# 智能成绩表
+# class Student:
+#     def __init__(self, name, rank):
+#         self.name = name
+#         self.rank = rank
+#
+#
+# n, m = map(int, input().split())
+# subject_rankIdx = {}
+# subjects = input().split()
+# for i in range(m):
+#     subject_rankIdx[subjects[i]] = i
+# students = []
+# for i in range(n):
+#     tmp = input().split()
+#     name = tmp[0]
+#     scores = list(map(int, tmp[1:]))
+#     rank = []
+#     rank.extend(scores)
+#     rank.append(sum(scores))
+#     students.append(Student(name, rank))
+# subject = input()
+# rankIdx = subject_rankIdx.get(subject, m)
+# students.sort(key=lambda x: (-x.rank[rankIdx], x.name))
+#
+# print(" ".join(map(lambda x: x.name, students)))
+
+# 计算面积
+# n, end_x = map(int, input().split())
+# ans = 0
+#
+# last_x = 0
+# last_y = 0
+#
+# for _ in range(n):
+#     cur_x, offset_y = map(int, input().split())
+#     ans += (cur_x - last_x) * abs(last_y)
+#     last_x = cur_x
+#     last_y += offset_y
+#
+# if end_x > last_x:
+#     ans += (end_x - last_x) * abs(last_y)
+#
+# print(ans)
+
+# 响应报文时间
+# C = int(input())
+# min_time = float('inf')
+# for _ in range(C):
+#     T, M = map(int, input().split())
+#     if M < 128:
+#         restime = T + M
+#     else:
+#         bstr = bin(M)[2:]  # 去掉二进制前面的0b
+#         exp = int(bstr[1:4], 2)
+#         mant = int(bstr[4:], 2)
+#         restime = T + ((mant | 16) << (exp + 3))
+#     min_time = min(min_time, restime)
+# print(min_time)
+
+# 跳房子
+# a = list(map(int, input()[1:-1].split(',')))
+# n = int(input())
+# m = len(a)
+# minn = 2 * n
+# ans1 = -1
+# ans2 = -1
+# for i in range(m): # 循环遍历第一个数
+#     for j in range(i + 1, m): # 寻找是否有数匹配
+#         if a[i] + a[j] == n and i + j < minn: # 记录答案
+#             ans1 = a[i]
+#             ans2 = a[j]
+#             minn = i + j
+# print(f"[{ans1}, {ans2}]")
+
+# 增强的strstr
+# import re
+#
+# def strongen_str(origin_str, target_str):
+#     pattern = re.compile(target_str)
+#     matcher = pattern.search(origin_str)
+#     return matcher.start() if matcher else -1
+#
+# def getResult():
+#     str1 = input()
+#     str2 = input()
+#     print(strongen_str(str1, str2))
+#
+# getResult()
+
+# 虚拟理财游戏
+# m, n, x = map(int, input().split())
+# back = list(map(int, input().split()))
+# risk = list(map(int, input().split()))
+# invest = list(map(int, input().split()))
+# max_invest_back = 0
+# select = {}
+#
+# for i in range(m):
+#     if risk[i] <= x:
+#         investI = min(invest[i], n)
+#         invest_back = investI * back[i]
+#         if invest_back > max_invest_back:
+#             max_invest_back = invest_back
+#             select.clear()
+#             select[i] = investI
+#     else:
+#         continue
+#     for j in range(i + 1, m):
+#         if risk[i] + risk[j] <= x:
+#             investI = 0
+#             investJ = 0
+#             if back[i] > back[j]:
+#                 investI = min(n, invest[i])
+#                 investJ = min(n - investI, invest[j])
+#             else:
+#                 investJ = min(n, invest[j])
+#                 investI = min(n - investJ, invest[i])
+#             invest_back = investI * back[i] + investJ * back[j]
+#             if invest_back > max_invest_back:
+#                 max_invest_back = invest_back
+#                 select.clear()
+#                 if investI > 0:
+#                     select[i] = investI
+#                 if investJ > 0:
+#                     select[j] = investJ
+# res = []
+# for i in range(m):
+#     if i in select:
+#         res.append(select[i])
+#     else:
+#         res.append(0)
+#
+# print(" ".join(map(str, res)))
+
+# 计算三叉搜索树的高度
+# class TreeNode:
+#     def __init__(self, val):
+#         self.val = val
+#         self.height = None
+#         self.left = None
+#         self.mid = None
+#         self.right = None
+#
+#
+# class Tree:
+#     def __init__(self):
+#         self.root = None
+#         self.height = 0
+#
+#     def add(self, val):
+#         node = TreeNode(val)
+#
+#         if self.root is None:
+#             node.height = 1
+#             self.root = node
+#             self.height = 1
+#         else:
+#             cur = self.root
+#
+#             while True:
+#                 node.height = cur.height + 1
+#                 self.height = max(node.height, self.height)
+#                 if val < cur.val - 500:
+#                     if cur.left is None:
+#                         cur.left = node
+#                         break
+#                     else:
+#                         cur = cur.left
+#                 elif val > cur.val + 500:
+#                     if cur.right is None:
+#                         cur.right = node
+#                         break
+#                     else:
+#                         cur = cur.right
+#                 else:
+#                     if cur.mid is None:
+#                         cur.mid = node
+#                         break
+#                     else:
+#                         cur = cur.mid
+#
+#
+# def getResult():
+#     n = int(input())
+#     nums = list(map(int, input().split()))
+#
+#     tree = Tree()
+#     for num in nums:
+#         tree.add(num)
+#
+#     return tree.height
+#
+#
+# print(getResult())
+
+# 数字连续和
+# import sys
+#
+# n, x = map(int, input().split())
+# arr = list(map(int, sys.stdin.readline().split()))
+#
+#
+# def getResult():
+#     preSum = [0] * (n + 1)
+#
+#     for i in range(1, n + 1):
+#         preSum[i] = preSum[i - 1] + arr[i - 1]
+#
+#     l = 0
+#     r = 1
+#     ans = 0
+#
+#     while r <= n:
+#         if preSum[r] - preSum[l] >= x:
+#             ans += n - r + 1
+#             l += 1
+#             r = l + 1
+#         else:
+#             r += 1
+#
+#     return ans
+#
+#
+# print(getResult())
+
+# 数组组成的最小数字
+# import functools
+#
+# strs = input().split(",")
+#
+#
+# def cmp(a, b):
+#     s1 = a + b
+#     s2 = b + a
+#     return 0 if s1 == s2 else 1 if s1 > s2 else -1
+#
+#
+# def getResult(strs):
+#     strs.sort(key=lambda x: int(x))
+#     tmp = strs[:3]
+#     tmp.sort(key=functools.cmp_to_key(cmp))
+#     return "".join(tmp)
+#
+
+# print(getResult(strs))
+
+# 数组拼接
+# subLen = int(input())
+# n = int(input())
+# lists = [input().split(",") for i in range(n)]
+#
+# def getResult():
+#     ans = []
+#     while len(lists) > 0:
+#         lst = lists.pop(0)
+#         tmp = lst[:subLen]
+#         ans.extend(tmp)
+#         del lst[:subLen]
+#         if len(lst) > 0:
+#             lists.append(lst)
+#     return ",".join(ans)
+#
+#
+# print(getResult())
+
+# 最长子字符串的长度（一）
+# s = input()
+#
+#
+# def getResult():
+#     zeroCount = 0
+#     for c in s:
+#         if c == 'o':
+#             zeroCount += 1
+#     if zeroCount % 2 == 0:
+#         return len(s)
+#     else:
+#         return len(s) - 1
+#
+#
+# print(getResult())
+
+# 分糖果
+# import collections
+#
+# n = int(input())
+# def getResult(n):
+#     queue = collections.deque()
+#     queue.append(n)
+#
+#     def bfs(queue, target, depth):
+#         while queue:
+#             depth += 1
+#             for i in range(len(queue)):
+#                 cur = queue.popleft()
+#                 if cur == target:
+#                     return depth
+#                 queue.append(cur + 1)
+#                 queue.append(cur - 1)
+#                 if cur % 2 == 0:
+#                     queue.append(cur / 2)
+#
+#     return bfs(queue, 1, -1)
+#
+# print(getResult(n))
+
+# 按身高和体重排队
+# n = int(input())
+# heights = list(map(int, input().split()))
+# weights = list(map(int, input().split()))
+#
+#
+# # 算法入口
+# def getResult():
+#     students = []
+#     for i in range(n):
+#         students.append([heights[i], weights[i], i + 1])
+#     students.sort(key=lambda x: (x[0], x[1], x[2]))
+#     return " ".join(map(lambda x: str(x[2]), students))
+#
+#
+# print(getResult())
+
+# 判断一组不等式是否满足约束并输出最大差
+# def cmp(val, op):
+#     if op == ">":
+#         return val > 0
+#     elif op == ">=":
+#         return val >= 0
+#     elif op == "<":
+#         return val < 0
+#     elif op == "<=":
+#         return val <= 0
+#     elif op == "=":
+#         return val == 0
+#     else:
+#         return False
+#
+#
+# def result(arr):
+#     a11, a12, a13, a14, a15 = map(float, arr[0])
+#     a21, a22, a23, a24, a25 = map(float, arr[1])
+#     a31, a32, a33, a34, a35 = map(float, arr[2])
+#     x1, x2, x3, x4, x5 = map(float, arr[3])
+#     b1, b2, b3 = map(float, arr[4])
+#     y1, y2, y3 = arr[5]
+#     diff1 = a11 * x1 + a12 * x2 + a13 * x3 + a14 * x4 + a15 * x5 - b1
+#     diff2 = a21 * x1 + a22 * x2 + a23 * x3 + a24 * x4 + a25 * x5 - b2
+#     diff3 = a31 * x1 + a32 * x2 + a33 * x3 + a34 * x4 + a35 * x5 - b3
+#     flag = cmp(diff1, y1) and cmp(diff2, y2) and cmp(diff3, y3)
+#     maxDiff = max(diff1, diff2, diff3)
+#     print(f"{flag} {int(maxDiff)}".lower())
+#
+#
+# arr = list(map(lambda s: s.split(","), input().split(";")))
+# result(arr)
+
+# 高矮个子排队
+# def getResult():
+#     input_line = input()
+#     tmp = input_line.split()
+#     if all(num.isdigit() for num in tmp):
+#         cap = [int(num) for num in tmp]
+#         len_cap = len(cap)
+#         for i in range(len_cap):
+#             if i % 2 == 0 and i < len_cap - 1 and cap[i] < cap[i + 1]:
+#                 cap[i], cap[i + 1] = cap[i + 1], cap[i]
+#             if i % 2 == 1 and i < len_cap - 1 and cap[i] > cap[i + 1]:
+#                 cap[i], cap[i + 1] = cap[i + 1], cap[i]
+#         print(" ".join(map(str, cap)))
+#     else:
+#         print("[]")
+#
+#
+# getResult()
+
+# 喊7的次数重排
+# arr = list(map(int, input().split()))
+#
+#
+# def getResult():
+#     totalGo = sum(arr)
+#     n = len(arr)
+#     p = [0] * n
+#     i = 1
+#     j = 0
+#     while totalGo > 0:
+#         if i % 7 == 0 or str(i).find("7") != -1:
+#             totalGo -= 1
+#             p[j] += 1
+#         i += 1
+#         j += 1
+#         if j >= n:
+#             j = 0
+#     return " ".join(map(str, p))
+#
+#
+# print(getResult())
+
+# 补种未成活胡杨
+# n = int(input())
+# m = int(input())
+# deadIdx = list(map(int, input().split()))
+# arr = [1]*n
+# for i in range(m):
+#     arr[deadIdx[i]-1] = 0
+#
+# k = int(input())
+# def getResult():
+#     left = 0
+#     cur = []
+#     maxLen = 0
+#     for right in range(n):
+#         if arr[right] == 0:
+#             cur.append(right)
+#             if len(cur) > k:
+#                 maxLen = max(maxLen, right-left)
+#                 left = cur.pop(0) + 1
+#                 continue
+#         maxLen = max(maxLen, right-left+1)
+#     return maxLen
+# print(getResult())
+
+# 矩形相交的面积
+# x1,y1,w1,h1 = map(int,input().split())
+# x2,y2,w2,h2 = map(int,input().split())
+# x3,y3,w3,h3 = map(int,input().split())
+# def getResult():
+#     wid = min(x1+w1, x2+w2, x3+w3)-max(x1, x2, x3)
+#     if wid <= 0:
+#         return 0
+#     hei = min(y1, y2, y3) - max(y1-h1, y2-h2, y3-h3)
+#     if hei <= 0:
+#         return 0
+#     return wid*hei
+#
+# print(getResult())
+
+# 数大雁
+# quacks = input()
+#
+# # 算法入口
+# def getResult():
+#     q_index = []
+#     u, a, c = 0, 0, 0
+#     quack_index = []
+#
+#     for i in range(len(quacks)):
+#         char = quacks[i]
+#         if char == 'q':
+#             q_index.append(i)
+#         elif char == 'u':
+#             if u + 1 <= len(q_index):
+#                 u += 1
+#         elif char == 'a':
+#             if a + 1 <= u:
+#                 a += 1
+#         elif char == 'c':
+#             if c + 1 <= a:
+#                 c += 1
+#         elif char == 'k':
+#             if c >= 1:
+#                 quack_index.append([q_index.pop(0), i])
+#                 u -= 1
+#                 a -= 1
+#                 c -= 1
+#         else:
+#             return -1
+#     if len(quack_index) == 0:
+#         return -1
+#     cnt = 1
+#     for i in range(len(quack_index)):
+#         count = 1
+#         for j in range(i + 1, len(quack_index)):
+#             if quack_index[i][1] >= quack_index[j][0]:
+#                 count += 1
+#         cnt = max(cnt, count)
+#     return cnt
+#
+# print(getResult())
+
+# 日志首次上报最多积分
+# arr = list(map(int, input().split()))
+#
+#
+# def getResult(arr):
+#     n = len(arr)
+#     dp = [0] * n
+#     delay = [0] * n
+#     socre = [0] * n
+#     dp[0] = arr[0]
+#     socre[0] = arr[0]
+#     for i in range(n):
+#         dp[i] = min(100, dp[i - 1] + arr[i])
+#         delay[i] = delay[i - 1] + dp[i - 1]
+#         socre[i] = dp[i] - delay[i]
+#         if dp[i] >= 100:
+#             break
+#     print(max(socre))
+#
+#
+# getResult(arr)
+
+# 分苹果
+# n = int(input())
+# apples = list(map(int, input().split()))
+# aWeight = 0
+# for i in range(0, len(apples)):
+#     aWeight = aWeight ^ apples[i]
+# if aWeight == 0:
+#     apples.sort(reverse=True)
+#     apples.pop()
+#     print(sum(apples))
+# else:
+#     print(-1)
+
+# 内存资源分配
+# lines = list(input().split(","))
+# tmp = []
+# for line in lines:
+#     key, cnt = map(int, line.split(":"))
+#     if cnt == 0:continue
+#     tmp.append([key, cnt])
+# tmp.sort(key = lambda x: x[0])
+# shenqing = list(map(int, input().split(",")))
+# cashs = [[1, 128], [32, 4], [64, 2], [128, 1]]
+# sq = [50, 36, 64, 128, 127]
+# ans = []
+# for i in sq:
+#     if i < cashs[0][0] or i > cashs[-1][0]:
+#         ans.append("false")
+#         continue
+#     l = 0
+#     r = len(cashs)-1
+#     while l < r:
+#         mid = (l+r)//2
+#         if cashs[mid][0] > i:
+#             r = mid
+#         else:
+#             l = mid + 1
+#     if cashs[l][1]>0:
+#         cashs[l][1] -= 1
+#         ans.append("true")
+#     if cashs[l][1] == 0:
+#         del cashs[l]
+#
+# print(ans)
+
+# 找终点
+# arr = list(map(int, input().split()))
+#
+#
+# def loop(arr, i, count):
+#     j = i + arr[i]
+#     if j == len(arr) - 1:
+#         return count
+#     elif j < len(arr) - 1:
+#         count += 1
+#         return loop(arr, j, count)
+#     else:
+#         return -1
+#
+#
+# def result():
+#     res = []
+#     for i in range(1, len(arr) // 2):
+#         res.append(loop(arr, i, 2))
+#     tmp = list(filter(lambda x: x > 0, res))
+#     tmp.sort()
+#     if len(tmp) > 0:
+#         return tmp[0]
+#     else:
+#         return -1
+#
+#
+# print(result())
+
+# 斗地主之顺子
+# cards = input().split()
+# def map(card):
+#     if card == "J":
+#         return 11
+#     elif card == "Q":
+#         return 12
+#     elif card == "K":
+#         return 13
+#     elif card == "A":
+#         return 14
+#     elif card == "2":
+#         return 16
+#     else:
+#         return int(card)
+#
+# def result():
+#     cards.sort(key=lambda x: map(x))
+#     # print(cards)
+#     straights = [[cards[0]]]
+#     for i in range(1, len(cards)):
+#         card = cards[i]
+#         flag = True
+#         for straight in straights:
+#             if map(card) - map(straight[-1]) == 1:
+#                 straight.append(card)
+#                 flag = False
+#                 break
+#         if flag:
+#             straights.append([card])
+#     straights = list(filter(lambda x: len(x) >= 5, straights))
+#     if len(straights) == 0:
+#         print("No")
+#         return
+#     straights.sort(key=lambda x: map(x[0]))
+#     for straight in straights:
+#         print(" ".join(straight))
+# result()
+
+# 生成哈夫曼树
+# import heapq
+#
+#
+# class Node:
+#     def __init__(self, lc, rc, weight, height):
+#         self.lc = lc  # 左孩子节点
+#         self.rc = rc  # 右孩子节点
+#         self.weight = weight  # 当前节点的权重
+#         self.height = height  # 当前节点代表子树的高度
+#
+#     def __gt__(self, other):
+#         # 优先级比较时，权重小的优先级更高，权重相同时，高度小的优先级更高
+#         if self.weight != other.weight:
+#             return self.weight > other.weight
+#         else:
+#             return self.height > other.height
+#
+#
+# # 输入获取
+# n = int(input())
+# weights = list(map(int, input().split()))
+#
+#
+# # 二叉树中序遍历
+# def midOrder(root, seq):
+#     # 中序遍历，即先遍历二叉树的左子树，再遍历二叉树的根，最后遍历二叉树的右子树
+#     if root.lc is not None:
+#         midOrder(root.lc, seq)
+#
+#     seq.append(root.weight)
+#
+#     if root.rc is not None:
+#         midOrder(root.rc, seq)
+#
+#
+# # 算法入口
+# def getResult():
+#     pq = []
+#
+#     # 创建n个哈夫曼树节点，并加入优先队列
+#     for w in weights:
+#         heapq.heappush(pq, Node(None, None, w, 0))
+#
+#     # 初始n个节点经过多轮合并，只剩一个节点时，那么该节点就是哈夫曼树的根节点，因此当优先队列中只剩一个节点时即可停止合并
+#     while len(pq) > 1:
+#         # 取出优先队列中前两个权值最小的节点，由于优先队列已按照 [节点权重，节点子树高度] 升序优先级，因此先出来的肯定是权重小，或者高度小的节点，即作为新节点的左子树
+#         lc = heapq.heappop(pq)
+#         rc = heapq.heappop(pq)
+#
+#         # 将lc和rc合并，合并后新节点fa的权重，是两个子节点权重之和，fa子树高度 = rc子树高度+1; PS：rc的高度>=lc的高度
+#         fa_weight = lc.weight + rc.weight
+#         fa_height = rc.height + 1
+#
+#         # 将合并后的新节点加入优先队列
+#         heapq.heappush(pq, Node(lc, rc, fa_weight, fa_height))
+#
+#     # 最后优先队列中必然只剩一个节点，即哈夫曼树的根节点，此时对此根节点（哈夫曼树）进行中序遍历
+#     root = heapq.heappop(pq)
+#     seq = []
+#     midOrder(root, seq)
+#
+#     return " ".join(map(str, seq))
+#
+#
+# # 算法调用
+# print(getResult())
+
+# 最长连续子序列
+# arr = list(map(int, input().split(",")))
+# sumV = int(input())
+# def getResult(arr, sumV):
+#     ans =-1
+#     l = 0
+#     r = 0
+#     n = len(arr)
+#     total = arr[l]
+#     while True:
+#         if total > sumV:
+#             l += 1
+#             if r<l:
+#                 r=l
+#             total -= arr[l-1]
+#         elif total < sumV:
+#             r += 1
+#             if r<n:
+#                 total += arr[r]
+#             else:
+#                 break
+#         else:
+#             ans = max(ans, r-l+1)
+#             l += 1
+#             r += 1
+#             if r<n:
+#                 total += arr[r]-arr[l-1]
+#             else:
+#                 break
+#     return ans
+# print(getResult(arr, sumV))
+
+# 一种字符串压缩表示的解压
+# s = input()
+#
+#
+# def getResult(s):
+#     ans = ""
+#     i = 0
+#     while i < len(s):
+#         if not (s[i].isdigit() or s[i].islower()):
+#             return "!error"
+#         elif s[i].isdigit():
+#             num = []
+#             num.append(s[i])
+#             j = i + 1
+#             while s[j].isdigit():
+#                 num.append(s[j])
+#                 j += 1
+#             if not (s[j].isdigit() or s[j].islower()):
+#                 return "!error"
+#             if len(num) == 1 and int(num[-1]) <= 2:
+#                 return "!error"
+#             else:
+#                 a = int("".join(num))
+#                 tmp = s[j] * a
+#                 ans += tmp
+#                 i = j
+#         else:
+#             ans += s[i]
+#         i += 1
+#     return ans
+#
+#
+# print(getResult(s))
+
+# 贪心的商人
+# number=int(input())
+# days=int(input())
+# item=list(map(int,input().split()))
+# item_price=[list(map(int,input().split())) for _ in range(number)]
+# profit = 0
+# for i in range(number):
+#     for j in range(days-1):
+#         profit += max((item_price[i][j+1]-item_price[i][j]),0)*item[i]
+# print(profit)
+
+# 简单的自动曝光
+# arr =list(map(int, input().split()))
+# import sys
+# def getResult(arr):
+#     minDiff = sys.maxsize
+#     ans = None
+#     for k in range(-127, 129):
+#         sum = 0
+#         for j in range(len(arr)):
+#             newVal = min(max(0, arr[j]+k), 255)
+#             sum += newVal
+#         diff = abs(sum/len(arr) - 128)
+#         if diff <minDiff:
+#             minDiff = diff
+#             ans = k
+#         elif diff == minDiff and ans is not None:
+#             ans = min(ans, k)
+#     return ans
+# print(getResult(arr))
+
+# 预订酒店
+# n, k, x = map(int, input().split(" "))
+# prices = list(map(int, input().split(" ")))
+# prices.sort()
+# absp = []
+# for i in range(len(prices)):
+#     absp.append([abs(prices[i] - x), i])
+# absp.sort(key=lambda x: x[0])
+# ans = []
+# for i in range(k):
+#     ans.append(prices[absp[i][1]])
+# ans.sort()
+# print(" ".join(map(str, ans)))
+
+# 找数字
+# n = int(input())
+# m = int(input())
+# arr = [list(map(int, input().split())) for i in range(n)]
+# def getResult():
+#     nums = {}
+#     for i in range(n):
+#         for j in range(m):
+#             num = arr[i][j]
+#             if nums.get(num) is None:
+#                 nums[num] = [[i, j]]
+#             else:
+#                 nums[num].append([i, j])
+#     for i in range(n):
+#         for j in range(m):
+#             num = arr[i][j]
+#             minDis = None
+#             for x, y in nums[num]:
+#                 if x != i or y !=j:
+#                     dis = abs(x-i) + abs(j-y)
+#                     if not minDis:
+#                         minDis = dis
+#                     else:
+#                         minDis = min(minDis, dis)
+#             arr[i][j] = -1 if not minDis else minDis
+#     return arr
+#
+# print(getResult())
+
+# 猜数字
+# def check_hint(guess, hint, answer):
+#     a = 0
+#     b = 0
+#     guess_digits = [0] * 10
+#     answer_digits = [0] * 10
+#     for i in range(4):
+#         if guess[i] == answer[i]:
+#             a += 1
+#         else:
+#             guess_digits[int(guess[i])] += 1
+#             answer_digits[int(answer[i])] += 1
+#     for i in range(10):
+#         b += min(guess_digits[i], answer_digits[i])
+#     return (int(hint[0]) == a and int(hint[2]) == b)
+#
+#
+# def main():
+#     N = int(input())
+#     guesses = []
+#     hints = []
+#     for _ in range(N):
+#         guess, hint = input().split()
+#         guesses.append(guess)
+#         hints.append(hint)
+#
+#     possible_answers = 0
+#     final_answer = ''
+#     for i in range(10000):
+#         answer = f"{i:04}"
+#         valid = True
+#         for j in range(N):
+#             if not check_hint(guesses[j], hints[j], answer):
+#                 valid = False
+#                 break
+#         if valid:
+#             possible_answers += 1
+#             final_answer = answer
+#
+#     # 输出结果
+#     if possible_answers == 1:
+#         print(final_answer)
+#     else:
+#         print("NA")
+#
+# if __name__ == "__main__":
+#     main()
+
+# 单词接龙
+# k = int(input())
+# n = int(input())
+# words = [input() for i in range(n)]
+# def result(k, n, words):
+#     chain = [words.pop(k)]
+#     prefix = {}
+#     for word in words:
+#         w = word[0]
+#         if prefix.get(w) is None:
+#             prefix[w] = []
+#         prefix[w].append(word)
+#     for w in prefix.keys():
+#         prefix[w].sort(key= lambda x: (-len(x), [ord(i) for i in x]))
+#     while True:
+#         tail = chain[-1][-1]
+#         if prefix.get(tail):
+#             chain.append(prefix[tail].pop(0))
+#         else:
+#             break
+#     return "".join(chain)
+# print(result(k, n, words))
+
+# 水仙花数
+# import math
+#
+#
+# def result(n, m):
+#     if n < 3 or n > 7:
+#         return -1
+#     powN = {}
+#     for i in range(10):
+#         powN[str(i)] = int(math.pow(i, n))
+#     minV = int(math.pow(10, n - 1))
+#     maxV = int(math.pow(10, n))
+#     ans = -1
+#     count = -1
+#     for i in range(minV, maxV):
+#         sumV = sum(map(lambda x: powN[x], list(str(i))))
+#         if sumV == i:
+#             ans = i
+#             count += 1
+#             if count == m:
+#                 return ans
+#     return ans
+#
+#
+# n = int(input())
+# m = int(input())
+# print(result(n, m))
+
+# We Are A Team
+# n, m = map(int, input().split())
+# arr = [list(map(int, input().split())) for i in range(m)]
+#
+#
+# class UnionFind():
+#     def __init__(self, n):
+#         self.father = list(range(n))
+#
+#     def find(self, val):
+#         if self.father[val] == val: return val
+#         self.father[val] = self.find(self.father[val])
+#         return self.father[val]
+#
+#     def merge(self, x, y):
+#         x_root = self.find(x)
+#         y_root = self.find(y)
+#         if x_root != y_root:
+#             self.father[y_root] = x_root
+#
+#
+# def getResult(n, arr):
+#     if n < 1 or n >= 100000 or m < 1 or m >= 100000:
+#         print("Null")
+#         return
+#     uf = UnionFind(n + 1)
+#     for i in range(m):
+#         i, j, c = arr[i]
+#         if i < 1 or i > n or j < 1 or j > n:
+#             print("da pian zi")
+#             continue
+#         if c == 0:
+#             uf.merge(i, j)
+#         elif c == 1:
+#             print("we are a team" if uf.find(i) == uf.find(j) else "we are not a team")
+#         else:
+#             print("da pian zi")
+#
+# getResult(n, arr)
+
+# 字符统计及重排
+# s = input()
+# import functools
+# def cmp(a, b):
+#     if a[1] != b[1]:
+#         return b[1] - a[1]
+#     if (a[0].islower() and b[0].islower()) or (a[0].isupper() and b[0].isupper()):
+#         return 1 if a[0]> b[0] else -1
+#     else:
+#         if a[0].isupper():
+#             return 1
+#         else:
+#             return -1
+#
+# def getResult():
+#     letter = {}
+#     for c in s:
+#         letter[c] = letter.get(c, 0) + 1
+#     letterList = list(letter.items())
+#     letterList.sort(key=functools.cmp_to_key(cmp))
+#     return "".join(list(map(lambda x:f"{x[0]}:{x[1]};", letterList)))
+# print(getResult())
+
+# 计算堆栈中的剩余数字
+# nums = list(map(int, input().split()))
+# def push(num, stack):
+#     total = num
+#     for i in range(len(stack)-1, -1, -1):
+#         total-=stack[i]
+#         if total == 0:
+#             del stack[i:]
+#             push(num * 2, stack)
+#             return
+#         elif total<0:
+#             break
+#     stack.append(num)
+# def result(nums):
+#     stack = [nums[0]]
+#     for i in range(1, len(nums)):
+#         push(nums[i], stack)
+#     stack.reverse()
+#     return " ".join(map(str, stack))
+# result(nums)
+
+# 报数游戏
+# 双向节点
+# class Node:
+#     def __init__(self, val):
+#         self.val = val
+#         self.next = None
+#         self.prev = None
+#
+#
+# # 循环链表
+# class CycleLinkedList:
+#     def __init__(self):
+#         self.head = None
+#         self.tail = None
+#         self.size = 0
+#
+#     def append(self, val):
+#         node = Node(val)
+#
+#         if self.size > 0:
+#             self.tail.next = node
+#             node.prev = self.tail
+#             self.tail = node
+#         else:
+#             self.head = node
+#             self.tail = node
+#
+#         self.head.prev = self.tail
+#         self.tail.next = self.head
+#         self.size += 1
+#
+#     def remove(self, cur):
+#         pre = cur.prev
+#         nxt = cur.next
+#
+#         pre.next = nxt
+#         nxt.prev = pre
+#
+#         cur.next = cur.prev = None
+#
+#         if self.head == cur:
+#             self.head = nxt
+#
+#         if self.tail == cur:
+#             self.tail = pre
+#
+#         self.size -= 1
+#
+#         return nxt
+#
+#     def __str__(self):
+#         arr = []
+#         cur = self.head
+#
+#         for i in range(self.size):
+#             arr.append(str(cur.val))
+#             cur = cur.next
+#
+#         return ",".join(arr)
+#
+#
+# # 输入获取
+# m = int(input())
+#
+#
+# # 算法入口
+# def getResult():
+#     if m <= 1 or m >= 100:
+#         return "ERROR!"
+#
+#     cycList = CycleLinkedList()
+#     for i in range(1, 101):
+#         cycList.append(i)
+#
+#     idx = 1
+#     cur = cycList.head
+#
+#     while cycList.size >= m:
+#         if idx == m:
+#             idx = 1
+#             cur = cycList.remove(cur)
+#         else:
+#             idx += 1
+#             cur = cur.next
+#
+#     return str(cycList)
+#
+#
+# # 算法调用
+# print(getResult())
+
+# 工号不够用了怎么办
+# import math
+#
+# x, y = map(int, input().split())
+#
+#
+# def getResult(x, y):
+#     print(max(1, math.ceil(math.log10(x / math.pow(26, y)))))
+#
+#
+# getResult(x, y)
+
+# 第k个排列
+# n = int(input())
+# k = int(input())
+# arr = [i + 1 for i in range(n)]
+#
+# fact = [0] * (n + 1)
+# fact[1] = 1
+# for i in range(2, n + 1):
+#     fact[i] = fact[i - 1] * i
+#
+#
+# # 算法入口
+# def getResult(n, k, arr):
+#     if n == 1:
+#         return "1"
+#
+#     f = fact[n - 1]
+#     prefix = arr[(k - 1) // f]
+#     k %= f
+#     k = f if k == 0 else k
+#
+#     arr = list(filter(lambda x: x != prefix, arr))
+#
+#     if k == 1:
+#         return str(prefix) + "".join(map(str, arr))
+#     else:
+#         return str(prefix) + getResult(n - 1, k, arr)
+#
+#
+# print(getResult(n, k, arr))
+
+# 恢复数字序列
+# s, k = input().split()
+# k = int(k)
+# def cmp(base, count):
+#     # 用来比较count与base差异。
+#     for c in base:
+#         # key为各个数字，value是出现的次数。
+#         if count.get(c) is None or count[c] != base[c]:
+#             return False
+#     return True
+#
+# def countNumber(num, count, isAdd):
+#     for c in num: # 加，减合并成一个函数。
+#         count[c] = count.get(c, 0)+(1 if isAdd else -1)
+#
+# def result():
+#     base = {}
+#     # 题目提供的基准。
+#     for c in s:
+#         base[c] = base.get(c,0)+1 # 这个写法我觉得很牛逼。
+#     # 初始化滑窗(长度为k)中各字符的数量
+#     count = {}
+#     # 题目说了连续的正整数，所以从1到k
+#     for i in range(1, k+1):
+#         countNumber(str(i), count, True)
+#     # 如果滑窗各字符数量和base统计的字符数量是否一致，如果一致，就说明初始化滑窗是一个符合要求的连续整数数列。
+#     # 该数列的最小值为1
+#     if cmp(base, count):
+#         return 1
+#     # 初始化滑窗没有返回，那就增加一个。滑窗长度是k。
+#     for i in range(2, 1000-k+2): # 开始为2，结束为1000-k+1 然后range左闭右开，需要再加1.
+#         # 相校于上一个滑窗新增的数字。
+#         remove = str(i-1)
+#         countNumber(remove, count, False) # 调用减去。优秀！
+#         # 相较于上一个滑窗增加的数字
+#         add = str(i+k-1)
+#         countNumber(add, count, True)
+#         # 进行比较
+#         if cmp(base, count):
+#             return i
+#     return -1
+# result()
+
+# VLAN资源池
+# vlanArr = list(map(lambda x: list(map(int, x.split("-"))), input().split(",")))
+# remove = int(input())
+# # 生成区间
+# def genRange(start, end):
+#
+#     if start < end:
+#         return [start, end]
+#     else:
+#         return [start]
+# def result():
+#     vlanArr.sort(key= lambda x: x[0])
+#     for i in range(len(vlanArr)): # 这里不能把i换成start，end，换成肯定报错啊
+#         vlan = vlanArr[i]
+#         start = vlan[0]
+#         if len(vlan)>1:
+#             end = vlan[1]
+#             if remove < start or remove > end:
+#                 continue # 不在区间内，就跳过
+#             # remove在区间内。
+#             vlanArr.pop(i) # 把他弹出去。
+#             if remove == start:
+#                 vlanArr.insert(i, genRange(remove + 1, end))
+#             elif remove == end:
+#                 vlanArr.insert(i, genRange(start, remove-1))
+#             else:
+#                 # 刚好在中间，劈成两半
+#                 vlanArr.insert(i, genRange(remove+1, end)) # 先把后半段插入。然后再插入前半段。
+#                 vlanArr.insert(i, genRange(start, remove - 1))
+#             break # 搞定了
+#         # len(vlan) = 1
+#         elif start == remove:
+#             vlanArr.pop(i)
+#             break
+#     return ",".join(list(map(lambda x:"-".join(map(str, x)), vlanArr)))
+# print(result())
+
+# 关联子串
+# str1, str2 = input().split()
+# def result():
+#     # 先统计str1的字符串的数量。
+#     count = {}
+#     for c in str1:
+#         count[c] = count.get(c, 0) + 1
+#     total = len(str1) # 获取str1的长度
+#     # 滑窗三步，1，初始化滑窗，固定还是非固定2.开始滑动，3.终止滑动。
+#     # 初始化滑窗，要跟str1一样长，这里里边先找找是否有合适的。】
+#     for i in range(len(str1)):
+#         # 添加到滑窗里面的
+#         add = str2[i]
+#         # 如果新增字符是str1的字符，即count[add] > 0时，则说明滑窗子串已找到一个目标字符，
+#         # 此时剩余add字符数量count[add]--,剩余目标字符总数total--
+#         if count.get(add) is not None:
+#             if count[add]>0:# 这里要判断count[add] > 0，因为他后面有可能出现负数的。如果等于0，后面减去没意义
+#                 total -= 1 # 如果coount[add]<=0了你再减去，对total不能有影响。
+#             # 不管count[add]是必须要减去1的。
+#             count[add] -= 1
+#     # 如果total == 0，则说明滑窗内所有字符都是str1内的字符，由于限定了滑窗的长度就是str1的长度，因此滑窗内字符和str1完全匹配
+#     if total == 0:
+#         # 在初始化滑窗就找到了答案。
+#         return 0
+#     for i in range(1, len(str2)-len(str1)+1):
+#         # 踢出滑窗的
+#         remove = str2[i-1]
+#         # 进滑窗的，这里一定要画图
+#         add = str2[i + len(str1)-1]
+#         # 出去的要还原,如果在count里面，只要key存在，不管value
+#         if count.get(remove) is not None:
+#             # 对total起作用的是要count[remove]本身大于等于0
+#             if count[remove]>=0:#这里要大于等于0，相当于至少要是0，下面马上就要加1，才能对total有影响。如果是-1就没意义
+#                 total += 1
+#             # 不管count[remove]是否大于0，都要加回去
+#             count[remove] += 1
+#         # 处理进滑窗的，跟上面初始化滑窗逻辑一样。
+#         if count.get(add) is not None:
+#             if count[add]>0:
+#                 total -= 1
+#             count[add] -= 1
+#         # 跟上面滑窗逻辑一样如果total==0，就返回啦。
+#         if total == 0:
+#             return i
+#     # 循环结束后还没有return，只能return -1
+#     return -1
+# print(result())
+
+# 最佳对手
+# n, d = map(int, input().split())
+# arr = list(map(int, input().split()))
+# def getResutle(n, d, arr):
+#     arr.sort()
+#     diffs = []
+#     for i in range(1, len(arr)):
+#         diff = arr[i]-arr[i-1]
+#         if diff<=d: # 从小到大排序的，结果相邻两个差额都大于d了，肯定不能配对。
+#             diffs.append([i-1, i , diff]) # 有重复的 1,2配对，2和3配对。
+#     if len(diffs) == 0: return -1
+#     # return diffs
+#     # [[0, 1, 29], [2, 3, 0], [3, 4, 6], [4, 5, 2]]
+#     # 接下来处理重复配对的
+#     res = []
+#     dfs(0, diffs, [], res)
+#     res.sort(key=lambda x:(-x[0], x[1])) # 先看组合数，组合数最多， 如果组合数相同，看差最小。排序就是这样的。
+#     return res[0][1] # 返回的是和值最小的那个
+#
+# def dfs(index, diffs, path, res):
+#     # 开始遍历
+#     for i in range(index, len(diffs)):
+#         if len(path)==0 or path[-1][1] < diffs[i][0]:# 把重复的去掉。
+#             path.append(diffs[i])
+#             dfs(i+1, diffs, path, res) # 牛掰。
+#             count = len(path) # 计算组合了多少个。
+#             sumDiff = sum(map(lambda x:x[2], path)) # 求出差别的和。
+#             # 添加到res里
+#             res.append([count, sumDiff])
+#             path.pop() # 这里没搞清
+#
+# getResutle(n,d,arr)
+
+# 游戏分组
+# 输入获取
+# arr = list(map(int, input().split()))
+#
+#
+# # 求解去重组合
+# def dfs(arr, index, level, sumV, res):
+#     if level == 5:
+#         res.append(sumV)
+#         return
+#
+#     for i in range(index, 10):
+#         if i > index and arr[i] == arr[i - 1]:  # arr已经升序，这里进行树层去重
+#             continue
+#         dfs(arr, i + 1, level + 1, sumV + arr[i], res)
+#
+#
+# # 算法入口
+# def getResult(arr):
+#     arr.sort()
+#
+#     res = []
+#     # dfs求10选5的去重组合，并将组合之和记录进res中，即res中记录的是所有可能性的5人小队实力值之和
+#     dfs(arr, 0, 0, 0, res)
+#
+#     sumV = sum(arr)
+#     #  某队实力为subSum，则另一队实力为sum - subSum，则两队实力差为 abs((sum - subSum) - subSum)，先求最小实力差
+#     return min(map(lambda subSum: abs(sumV - 2 * subSum), res))
+#
+#
+# # 算法调用
+# print(getResult(arr))
+
+# 货币单位换算
+# n = int(input())
+# arr = [input() for i in range(n)]
+# import re
+# import math
+# def result(n, arr):
+#     # \d+ 匹配一个或者多个数字。
+#     pattern = r"(\d+)((CNY)|(JPY)|(HKD)|(EUR)|(GBP)|(fen)|(cents)|(sen)|(eurocents)|(pence))"
+#     dic = {
+#         "CNY":100,
+#         "JPY": 100 / 1825 * 100,
+#         "HKD": 100 / 123 * 100,
+#         "EUR": 100 / 14 * 100,
+#         "GBP": 100 / 12 * 100,
+#         "fen": 1,
+#         "cents": 100 / 123,
+#         "sen": 100 / 1825,
+#         "eurocents": 100 / 14,
+#         "pence": 100 / 12
+#     }
+#     ans = 0
+#     for s in arr:
+#         result = re.findall(pattern, s)
+#         print(result)
+#         for item in result:
+#             amount = item[0]
+#             unit = item[1]
+#             ans += int(amount) * dic[unit]
+#     return math.floor(ans)
+# print(result(n, arr))
+
+# 查找接口成功率最优时间段
+# 输入获取
+# minAverageLost = int(input())
+# nums = list(map(int, input().split()))
+#
+#
+# # 算法入口
+# def getResult():
+#     n = len(nums)
+#
+#     preSum = [0] * (n + 1)
+#     for i in range(1, n + 1):
+#         preSum[i] = preSum[i - 1] + nums[i - 1]
+#
+#     ans = []
+#     maxLen = 0
+#     for i in range(n):
+#         for j in range(i + 1, n + 1):
+#             # sumV 是 区间 [i, j-1] 的和
+#             sumV = preSum[j] - preSum[i]
+#             length = j - i
+#             lost = length * minAverageLost
+#
+#             if sumV <= lost:
+#                 if length > maxLen:
+#                     ans = [[i, j - 1]]
+#                     maxLen = length
+#                 elif length == maxLen:
+#                     ans.append([i, j - 1])
+#
+#     ans.sort(key=lambda x: x[0])
+#
+#     if len(ans) == 0:
+#         return "NULL"
+#     else:
+#         return " ".join(map(lambda x: "-".join(map(str, x)), ans))
+#
+#
+# # 算法调用
+# print(getResult())
+
+# 根据某条件聚类最少交换次数
+# 输入获取
+# arr = list(map(int, input().split()))
+# k = int(input())
+
+
+# 算法入口
+# def getResult():
+#     # 统计小于k的数组元素个数
+#     count = 0
+#     for num in arr:
+#         if num < k:
+#             count += 1
+#
+#     # 如果只有1个小于k的元素，则不需要交换就能使小于k的元素组合在一起
+#     if count == 1:
+#         return 0
+#
+#     # 先统计起点在0位置（即left=0）的滑动窗口的交换次数，得到一个minSwapCount初始值
+#     minSwapCount = 0
+#     for i in range(count):
+#         if arr[i] >= k:
+#             minSwapCount += 1
+#
+#     # 然后统计起点（left）在1~arr.length-count位置的滑动窗口的交换次数
+#     # 可以转化为求解终点（right）在count~arr.length位置的滑动窗口的交换次数
+#     tmpSwapCount = minSwapCount
+#     for j in range(count, len(arr)):
+#         # 上一轮的left，即滑窗失去的元素的索引
+#         preLeft = j - count
+#         # j 为本轮滑窗新增的元素的索引
+#         if arr[preLeft] >= k > arr[j]:
+#             tmpSwapCount -= 1
+#         elif arr[preLeft] < k <= arr[j]:
+#             tmpSwapCount += 1
+#         minSwapCount = min(minSwapCount, tmpSwapCount)
+#
+#     return minSwapCount
+#
+#
+# # 调用算法
+# print(getResult())
+
+# 荒岛求生
+# def main():
+#     nums = list(map(int, input().split()))
+#     left = []
+#     right = []
+#
+#     for num in nums:
+#         if num > 0:
+#             right.append(num)
+#         else:
+#             left.append(abs(num))
+#
+#     while left and right:
+#         if left[-1] > right[-1]:
+#             left.append(left.pop() - right.pop())
+#         elif left[-1] < right[-1]:
+#             right.append(right.pop() - left.pop())
+#         else:
+#             left.pop()
+#             right.pop()
+#
+#     print(len(left) + len(right))
+#
+# if __name__ == "__main__":
+#     main()
+
+# 数字涂色
+# #输入获取
+# n = int(input())
+# arr = list(map(int, input().split()))
+#
+#
+# # 算法入口
+# def getResult():
+#     arr.sort()
+#
+#     if arr[0] == 1:
+#         return 1
+#
+#     color = [False]*n
+#     count = 0
+#
+#     for i in range(n):
+#         if color[i]:
+#             continue
+#
+#         color[i] = True
+#         for j in range(i+1, n):
+#             if not color[j] and arr[j] % arr[i] == 0:
+#                 color[j] = True
+#
+#         count += 1
+#
+#     return count
+#
+#
+# # 调用算法
+# print(getResult())
+
+# IPv4地址转换成整数
+# s = input()
+#
+#
+# # 获取十进制数字符串对应的十六进制数字符串
+# def hexStr(num):
+#     tmp = hex(int(num))[2:]  # 要把前面的0x去掉。
+#     # 补足前导0 # 补足前导0 # 因为0-255为16^2嘛。最大就2位。就像0-99 为10的平方一样
+#     if len(tmp) == 1:
+#         tmp = "0" + tmp  # 这一步很重要
+#     return tmp
+#
+#
+# def isValid(ipSub, start, end):
+#     # 如果包含非数字字符，则不合法
+#     if not ipSub.isdigit():
+#         return False
+#     # 如果包含前导0，则不和法，如012 # 这个方法常用。优秀
+#     num = int(ipSub)
+#     if str(num) != ipSub:
+#         return False
+#     # 如果不是规定范围，则不合法
+#     return end >= num >= start
+#
+#
+# def result():
+#     # 边界条件判断
+#     ip = s.split("#")
+#     # ip地址由四部分组成，少于或多于四部分都不合法
+#     if len(ip) != 4:
+#         return "invalid IP"
+#     # 如果ip地址四部分某部分不合法，则ip不合法，先整体后局部
+#     if not isValid(ip[0], 1, 128) or not isValid(ip[1], 0, 255) or not isValid(ip[2], 0, 255) or not isValid(ip[3], 0,
+#                                                                                                              255):
+#         return "invalid IP"
+#     # 都过了检验了
+#     return str(int(hexStr(ip[0]) + hexStr(ip[1]) + hexStr(ip[1]) + hexStr(ip[3]), 16))
+#
+# print(result())
+
+#热点网站统计
+# import functools
+# def cmp(a, b):
+#     # 先按大小比
+#     if a[1] != b[1]:
+#         return b[1] - a[1]
+#     # 如果有访问次数相等的URL，按URL的字符串字典序升席排列，输出排序靠前的URL;
+#     elif a[0] != b[0]:
+#         return 1 if a[0]>b[0] else -1
+#     else:
+#         return 0
+#
+#
+# def sortURL(urls,cache,n):
+#     # 要求top几嘛
+#     for url in urls:
+#         if cache.get(url) is None:
+#             cache[url] = 1
+#         else:
+#             cache[url] += 1
+#     urlCount = list(cache.items())
+#     urlCount.sort(key=functools.cmp_to_key(cmp))
+#     return ",".join(map(lambda x:x[0], urlCount[:n])) # 本来就是str就不用转了
+#
+# urls = []  # 记录输入的url
+# cache = {}  # 记录每个url出现的次数
+# ans = []  # 记录题解
+# while True:
+#     tmp = input()
+#     if tmp == "": # 打印结果的时候了
+#         for an in ans:
+#             print(an)
+#     if tmp.isnumeric():
+#         # 输入的是数字 如果输入的是数字，则需要对前面输入的url进行排序统计
+#         ans.append(sortURL(urls, cache,int(tmp)))
+#         urls = [] # 清空，要重新统计了
+#     else:
+#         urls.append(tmp)
+#
+#求字符串中所有整数的最小和
+# s = input()
+# def result():
+#     isNegtive = False
+#     negtive = []
+#     ans = 0
+#     for c in s:
+#         if "0"<=c<="9":
+#             if isNegtive: #如果是负数，
+#                 negtive.append(c)
+#             else:
+#                 # 如果是正数自己加上字符转int，这样和最小。
+#                 ans += int(c)
+#         else:
+#             # 不是字符了。
+#             if isNegtive:
+#                 # 处理负数
+#                 ans -= int("".join(negtive))
+#                 negtive.clear() # 清空数组。
+#             isNegtive = c == "-" # 判断c是否等于-号，如果是，就是True
+#     if len(negtive) > 0: # 循环完了还有负数，继续同样的逻辑处理。
+#         ans -= int("".join(negtive))
+#     return ans
+# print(result())
+
+#螺旋数字矩阵
+# import math
+#
+# # 输入获取
+# # n 表示需要在螺旋矩阵中填入 1 ~ n 数字
+# # m 表示螺旋矩阵行数
+# n, m = map(int, input().split())
+#
+#
+# # 算法入口
+# def getResult():
+#     # k是螺旋矩阵列数
+#     k = int(math.ceil(n / m))
+#
+#     # 螺旋矩阵
+#     matrix = [['*'] * k for _ in range(m)]  # 未填值位置默认初始化为*
+#
+#     # 当前要填入的值
+#     step = 1
+#
+#     # 当前要填入的值的位置
+#     x = 0
+#     y = 0
+#
+#     # 如果填入的值 > n，则停止填值，否则继续填
+#     while step <= n:
+#         # 正序填入第x行，即：行号不变，列号增加，注意：添值过程不能发生覆盖，也不能填入超过n的值
+#         while y < k and matrix[x][y] == '*' and step <= n:
+#             matrix[x][y] = str(step)
+#             step += 1
+#             y += 1
+#
+#         # 正序填完第x行后，y处于末尾越界位置，因此y需要退一步
+#         y -= 1
+#         # 正序填完第x行来到第x行的末尾，即第y列，按照螺旋矩阵顺序，应该从第x+1行开始正序填值第y列
+#         x += 1
+#
+#         # 正序填入第y列，即：列号不变，行号增加，注意：添值过程不能发生覆盖，也不能填入超过n的值
+#         while x < m and matrix[x][y] == '*' and step <= n:
+#             matrix[x][y] = str(step)
+#             step += 1
+#             x += 1
+#
+#         x -= 1
+#         y -= 1
+#
+#         # 倒序填入第x行，即：行号不变，列号减少，注意：添值过程不能发生覆盖，也不能填入超过n的值
+#         while y >= 0 and matrix[x][y] == '*' and step <= n:
+#             matrix[x][y] = str(step)
+#             step += 1
+#             y -= 1
+#
+#         y += 1
+#         x -= 1
+#
+#         # 倒序填入第y列，即：列号不变，行号减少，注意：添值过程不能发生覆盖，也不能填入超过n的值
+#         while x >= 0 and matrix[x][y] == '*' and step <= n:
+#             matrix[x][y] = str(step)
+#             step += 1
+#             x -= 1
+#
+#         x += 1
+#         y += 1
+#
+#     # 打印螺旋矩阵字符串
+#     for i in range(m):
+#         print(" ".join(matrix[i]))
+#
+#
+# # 算法调用
+# getResult()
