@@ -2165,3 +2165,22 @@
 #
 # # 算法调用
 # getResult()
+
+#矩阵最大值
+# n = int(input())
+# arr = [input().split(",") for i in range(n)]
+#
+#
+# # 暴力破解
+# def result():
+#     ans = 0
+#     for i in range(n):
+#         maxV = int("".join(arr[i]), 2)  # 初始值
+#         for j in range(1, n):
+#             arr[i].insert(0, arr[i].pop())  # 把后面的弹出来，然后插到头部。
+#             maxV = max(maxV, int("".join(arr[i]), 2))  # 搞完之后就比较大小。
+#         ans += maxV
+#     return ans
+#
+#
+# print(result())
